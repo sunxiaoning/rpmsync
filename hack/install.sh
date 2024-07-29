@@ -6,7 +6,7 @@ set -o pipefail
 USE_DOCKER=${USE_DOCKER:-"0"}
 
 REPO_ROOT_PATH=/opt/rpmrepo
-BUILD_PATH=${REPO_ROOT_PATH}/__build
+BUILD_PATH=/tmp/__rpmrepo-build
 
 APP_NAME=nginx
 APP_REPO_VERSION="1.0.0"
@@ -14,7 +14,7 @@ APP_REPO_VERSION="1.0.0"
 
 REL_NOTES="new release"
 
-INSTALL_PATH=${REPO_ROOT_PATH}/__install
+INSTALL_PATH=/tmp/__rpmrepo-install
 REPO_URL="https://github.com/sunxiaoning/rpmsync/releases/download"
 
 
