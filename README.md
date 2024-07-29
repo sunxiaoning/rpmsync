@@ -3,10 +3,16 @@ sync rpm packages
 
 ## push rpm packages
 1. prepare gh
-   `make init`
+   ```bash
+   make init
+   ```
 2. create rpmrepo releases
-   `make install-relall`
+   ```bash
+   make install-relall
+   ```
 
 ## pull rpm packages
 1. get && install rpmrepo 
-   `make install-repoall`
+   ```bash
+   make install-repoall
+   ```
