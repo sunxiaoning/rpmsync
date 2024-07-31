@@ -62,6 +62,7 @@ install-repo() {
   APP_REPO_URL="${REPO_URL}/${APP_NAME}-repo-v${APP_REPO_VERSION}/${APP_NAME}.tar.gz"
   curl -Lo "${INSTALL_PATH}/${APP_NAME}.tar.gz" "${APP_REPO_URL}"
   rm -rf "${REPO_ROOT_PATH}/${APP_NAME}"
+  mkdir -p "${REPO_ROOT_PATH}"
   tar -zxvf "${INSTALL_PATH}/${APP_NAME}.tar.gz" -C "${REPO_ROOT_PATH}"
   rm -f "${INSTALL_PATH}/${APP_NAME}.tar.gz"
 }
