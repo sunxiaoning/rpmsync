@@ -22,12 +22,24 @@ auth-gh() {
   if gh auth status &>/dev/null; then
     exit 0
   else
-    GH_TOKEN=$(<.gh_token.txt)
-    if [ -z "$GH_TOKEN" ]; then
-      echo "Error: Personal Access Token not found."
+    GH_TOKEN=${GH_TOKEN:-""}
+    GH_TOKEN_FILE=${GH_TOKEN_FILE:-".gh_token.txt"}
+
+    if [[ -z "${GH_TOKEN}" ]]; then
+      echo "GH_TOKEN not set, try to load from file ..."
+      if [[ ! -f "${GH_TOKEN_FILE}" ]]; then
+        echo "Error: GH_TOKEN_FILE: ${GH_TOKEN_FILE} not found!"
+        exit 1
+      fi
+      GH_TOKEN=$(cat "${GH_TOKEN_FILE}")
+    fi
+
+    if [[ -z "${GH_TOKEN}" ]]; then
+      echo "GH_TOKEN can't be empty!"
       exit 1
     fi
-    echo "$GH_TOKEN" | gh auth login --with-token
+    echo "${GH_TOKEN}" | gh auth login --with-token
+    unset GH_TOKEN
   fi
 }
 
