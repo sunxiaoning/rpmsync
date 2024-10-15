@@ -2,17 +2,14 @@
 sync rpm packages
 
 ## push rpm packages
-1. prepare gh
+
+1. create rpmrepo releases
    ```bash
-   make init
-   ```
-2. create rpmrepo releases
-   ```bash
-   make install-relall
+   sudo bash -c "./rpmsync.sh install-relall"
    ```
 
 ## pull rpm packages
 1. get && install rpmrepo 
    ```bash
-   make install-repoall
+   sudo bash -c "./rpmsync.sh install-repoall"
    ```
