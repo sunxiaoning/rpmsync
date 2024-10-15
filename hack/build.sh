@@ -3,30 +3,45 @@ set -o nounset
 set -o errexit
 set -o pipefail
 
-USE_DOCKER=${USE_DOCKER:-"0"}
+SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE}")")
 
-REPO_ROOT_PATH=/opt/rpmrepo
-
-BUILD_PATH=${REPO_ROOT_PATH}/__build
-
-APP_NAME=nginx
+. ${SCRIPT_DIR}/env.sh
 
 build-tar() {
   echo "Build ${APP_NAME}.tar.gz ..."
+
   mkdir -p "${BUILD_PATH}"
-  tar -cvzf "${BUILD_PATH}/${APP_NAME}.tar.gz" -C ${REPO_ROOT_PATH} ${APP_NAME}
+  tar -cvzf "${BUILD_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz" -C "${REPO_LOCAL_ROOT_PATH}" "${APP_NAME}/${APP_VERSION}"
 }
 
 build-tarnginx() {
-  APP_NAME=nginx
+  APP_NAME="${NGINX_APP_NAME}"
+
+  APP_VERSION="${LATEST_NGINX_VERSION}"
+  build-tar
+
+  APP_VERSION="1.24.0"
+  build-tar
+
+  APP_VERSION="1.22.1"
   build-tar
 }
 
 build-targalera4() {
-  APP_NAME=galera-4
+  APP_NAME="${GALERA4_APP_NAME}"
+
+  APP_VERSION="${LATEST_GALERA_4_VERSION}"
   build-tar
 
-  APP_NAME=mysql-wsrep-8.0
+  APP_VERSION="26.4.19"
+  build-tar
+
+  APP_NAME="${MYSQL_WSREP_80_APP_NAME}"
+
+  APP_VERSION="${LATEST_MYSQL_WSREP_80_VERSION}"
+  build-tar
+
+  APP_VERSION="8.0.37"
   build-tar
 }
 
@@ -35,47 +50,24 @@ build-tarall() {
   build-targalera4
 }
 
-
 main() {
-  if [[ "1" == "${USE_DOCKER}" ]]; then
-    echo "Begin to build with docker."
-    case "${1-}" in
-    tar)
-      build-tar-docker
-      ;;
-    tarnginx)
-      build-tarnginx-docker
-      ;;
-    targalera4)
-      build-targalera4-docker
-      ;;
-    tarall)
-      build-tarall-docker
-      ;;
-    *)
-      build-tarall-docker
-      ;;
-    esac
-  else
-    echo "Begin to build in the local environment."
-    case "${1-}" in
-    tar)
-      build-tar
-      ;;
-    tarnginx)
-      build-tarnginx
-      ;;
-    targalera4)
-      build-targalera4
-      ;;
-    tarall)
-      build-tarall
-      ;;
-    *)
-      build-tarall
-      ;;
-    esac
-  fi
+  case "${1-}" in
+  tar)
+    build-tar
+    ;;
+  tarnginx)
+    build-tarnginx
+    ;;
+  targalera4)
+    build-targalera4
+    ;;
+  tarall)
+    build-tarall
+    ;;
+  *)
+    build-tarall
+    ;;
+  esac
 }
 
 main "$@"

@@ -1,0 +1,6 @@
+[submodule "rpmbuild"]
+	path = rpmbuild
+	url = https://github.com/sunxiaoning/rpmbuild
+[submodule "rpmmirror"]
+	path = rpmmirror
+	url = https://github.com/sunxiaoning/rpmmirror
