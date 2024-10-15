@@ -4,3 +4,6 @@
 [submodule "rpmmirror"]
 	path = rpmmirror
 	url = https://github.com/sunxiaoning/rpmmirror
+[submodule "bashutils"]
+	path = bashutils
+	url = https://github.com/sunxiaoning/bashutils
