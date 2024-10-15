@@ -31,7 +31,7 @@ install-rel() {
 
   if gh release view "${REL_TAG}" &>/dev/null; then
     echo "Release ${REL_TAG} already exists!"
-    exit 0
+    return 0
   fi
 
   gh release create "${REL_TAG}" "${BUILD_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz" --title "${REL_TITLE}" --notes "${REL_NOTES}"
