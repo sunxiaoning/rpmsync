@@ -1,6 +1,4 @@
 install-relgalera4() {
-  build-targalera4
-
   APP_NAME="${GALERA4_APP_NAME}"
 
   APP_VERSION="${LATEST_GALERA_4_VERSION}"

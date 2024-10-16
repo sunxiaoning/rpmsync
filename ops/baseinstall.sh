@@ -15,6 +15,8 @@ AUTH_GH_SH_URL_GITEE="https://gitee.com/williamsun/ghcli/raw/main/autorun.sh"
 AUTH_GH_SH_URL=${AUTH_GH_SH_URL:-${AUTH_GH_SH_URL_GITHUB}}
 
 install-rel() {
+  build-tar
+
   auth-gh >/dev/null
 
   REL_TAG="${APP_NAME}-repo-v${APP_VERSION}"

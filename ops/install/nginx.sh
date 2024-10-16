@@ -1,6 +1,4 @@
 install-relnginx() {
-  build-tarnginx
-
   APP_NAME="${NGINX_APP_NAME}"
 
   APP_VERSION="${LATEST_NGINX_VERSION}"
