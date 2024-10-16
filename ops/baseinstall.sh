@@ -17,6 +17,8 @@ AUTH_GH_SH_URL=${AUTH_GH_SH_URL:-${AUTH_GH_SH_URL_GITHUB}}
 install-rel() {
   build-tar
 
+  TEMP_FILES+=("${BUILD_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz")
+
   auth-gh >/dev/null
 
   REL_TAG="${APP_NAME}-repo-v${APP_VERSION}"
@@ -30,8 +32,6 @@ install-rel() {
   fi
 
   gh release create "${REL_TAG}" "${BUILD_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz" --title "${REL_TITLE}" --notes "${REL_NOTES}"
-
-  rm -f "${BUILD_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz"
 }
 
 auth-gh() {
@@ -53,8 +53,11 @@ install-repo() {
   mkdir -p "${INSTALL_PATH}"
 
   curl -fsSLo "${INSTALL_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz" "${APP_REPO_URL}"
-  rm -rf "${REPO_LOCAL_ROOT_PATH}/${APP_NAME}/${APP_VERSION}"
+  TEMP_FILES+=("${INSTALL_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz")
+
   mkdir -p "${REPO_LOCAL_ROOT_PATH}"
+
+  rm -rf "${REPO_LOCAL_ROOT_PATH}/${APP_NAME}/${APP_VERSION}"
+
   tar -zxvf "${INSTALL_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz" -C "${REPO_LOCAL_ROOT_PATH}"
-  rm -f "${INSTALL_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz"
 }

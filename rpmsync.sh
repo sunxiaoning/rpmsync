@@ -15,6 +15,8 @@ OPS_SH_DIR="${CONTEXT_DIR}/ops"
 trap __terminate INT TERM
 trap __cleanup EXIT
 
+TEMP_FILES=()
+
 main() {
   case "${1-}" in
   build-tar)
@@ -65,7 +67,13 @@ terminate() {
 }
 
 cleanup() {
-  echo "cleanup..."
+  if [[ "${#TEMP_FILES[@]}" -gt 0 ]]; then
+    echo "Cleaning temp_files...."
+
+    for temp_file in "${TEMP_FILES[@]}"; do
+      rm -f "${temp_file}" || true
+    done
+  fi
 }
 
 main "$@"
