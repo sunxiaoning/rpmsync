@@ -43,6 +43,7 @@ auth-gh() {
 }
 
 install-repo() {
+  echo "Install ${APP_NAME}-${APP_VERSION} repo..."
 
   if [[ "1" == "${REPO_ORIGIN_SOURCE}" ]]; then
     REPO_URL="${REPO_URL_GITEE}"
@@ -51,6 +52,8 @@ install-repo() {
   APP_REPO_URL="${REPO_URL}/${APP_NAME}-repo-v${APP_VERSION}/${APP_NAME}-${APP_VERSION}.tar.gz"
 
   mkdir -p "${INSTALL_PATH}"
+
+  echo "Downloading ${APP_NAME}-${APP_VERSION}.tar.gz from ${APP_REPO_URL}..."
 
   curl -fsSLo "${INSTALL_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz" "${APP_REPO_URL}"
   TEMP_FILES+=("${INSTALL_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz")
