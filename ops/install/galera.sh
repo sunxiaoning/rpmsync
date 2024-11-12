@@ -29,7 +29,7 @@ install-repogalera4() {
   APP_VERSION="26.4.19"
   install-repo
 
-  APP_NAME=mysql-wsrep-8.0
+  APP_NAME="${MYSQL_WSREP_80_APP_NAME}"
 
   APP_VERSION="${LATEST_MYSQL_WSREP_80_VERSION}"
   install-repo
