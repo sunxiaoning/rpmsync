@@ -55,8 +55,9 @@ install-repo() {
 
   echo "Downloading ${APP_NAME}-${APP_VERSION}.tar.gz from ${APP_REPO_URL}..."
 
-  curl -fsSLo "${INSTALL_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz" "${APP_REPO_URL}"
   TEMP_FILES+=("${INSTALL_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz")
+
+  curl -fsSLo "${INSTALL_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz" "${APP_REPO_URL}"
 
   mkdir -p "${REPO_LOCAL_ROOT_PATH}"
 
