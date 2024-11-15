@@ -1,6 +1,6 @@
 REL_NOTES="new release"
 
-INSTALL_PATH=/tmp/__rpmrepo-install
+TEMP_PATH_DOWNLOADING_RPM_REPO=""
 
 export REPO_ORIGIN_SOURCE=${REPO_ORIGIN_SOURCE:-"0"}
 
@@ -17,7 +17,7 @@ AUTH_GH_SH_URL=${AUTH_GH_SH_URL:-${AUTH_GH_SH_URL_GITHUB}}
 install-rel() {
   build-tar
 
-  TEMP_FILES+=("${BUILD_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz")
+  TEMP_FILES+=("${TEMP_PATH_BUILD}/${APP_NAME}-${APP_VERSION}.tar.gz")
 
   auth-gh >/dev/null
 
@@ -31,7 +31,7 @@ install-rel() {
     return 0
   fi
 
-  gh release create "${REL_TAG}" "${BUILD_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz" --title "${REL_TITLE}" --notes "${REL_NOTES}"
+  gh release create "${REL_TAG}" "${TEMP_PATH_BUILD}/${APP_NAME}-${APP_VERSION}.tar.gz" --title "${REL_TITLE}" --notes "${REL_NOTES}"
 }
 
 auth-gh() {
@@ -51,17 +51,24 @@ install-repo() {
 
   APP_REPO_URL="${REPO_URL}/${APP_NAME}-repo-v${APP_VERSION}/${APP_NAME}-${APP_VERSION}.tar.gz"
 
-  mkdir -p "${INSTALL_PATH}"
+  if [[ -z "${TEMP_PATH_DOWNLOADING_RPM_REPO}" ]]; then
+    TEMP_PATH_DOWNLOADING_RPM_REPO="$(
+      mktemp -d -t downloading_rpm_repo-XXXXXX || {
+        echo 'Error: Failed to create downloading RPM repo path' >&2
+        exit 1
+      }
+    )"
+  fi
 
   echo "Downloading ${APP_NAME}-${APP_VERSION}.tar.gz from ${APP_REPO_URL}..."
 
-  TEMP_FILES+=("${INSTALL_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz")
+  TEMP_FILES+=("${TEMP_PATH_DOWNLOADING_RPM_REPO}/${APP_NAME}-${APP_VERSION}.tar.gz")
 
-  curl -fsSLo "${INSTALL_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz" "${APP_REPO_URL}"
+  curl -fsSLo "${TEMP_PATH_DOWNLOADING_RPM_REPO}/${APP_NAME}-${APP_VERSION}.tar.gz" "${APP_REPO_URL}"
 
   mkdir -p "${REPO_LOCAL_ROOT_PATH}"
 
   rm -rf "${REPO_LOCAL_ROOT_PATH}/${APP_NAME}/${APP_VERSION}"
 
-  tar -zxvf "${INSTALL_PATH}/${APP_NAME}-${APP_VERSION}.tar.gz" -C "${REPO_LOCAL_ROOT_PATH}"
+  tar -zxvf "${TEMP_PATH_DOWNLOADING_RPM_REPO}/${APP_NAME}-${APP_VERSION}.tar.gz" -C "${REPO_LOCAL_ROOT_PATH}"
 }

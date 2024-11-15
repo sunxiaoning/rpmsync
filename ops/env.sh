@@ -1,5 +1,5 @@
 REPO_LOCAL_ROOT_PATH=/opt/rpmrepo
-BUILD_PATH=/tmp/__rpmrepo-build
+TEMP_PATH_BUILD=""
 
 NGINX_APP_NAME="nginx"
 
