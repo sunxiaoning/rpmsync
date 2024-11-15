@@ -53,8 +53,8 @@ install-repo() {
 
   if [[ -z "${TEMP_PATH_DOWNLOADING_RPM_REPO}" ]]; then
     TEMP_PATH_DOWNLOADING_RPM_REPO="$(
-      mktemp -d -t downloading_rpm_repo-XXXXXX || {
-        echo 'Error: Failed to create downloading RPM repo path' >&2
+      rm -rf /tmp/downloading_rpm_repo-* && mktemp -d -t downloading_rpm_repo-XXXXXX || {
+        echo 'Error: Failed to create the path for downloading the RPM repository.' >&2
         exit 1
       }
     )"

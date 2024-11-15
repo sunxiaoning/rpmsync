@@ -3,8 +3,8 @@ build-tar() {
 
   if [[ -z "${TEMP_PATH_BUILD}" ]]; then
     TEMP_PATH_BUILD="$(
-      mktemp -d -t building_rpm_repo-XXXXXX || {
-        echo 'Error: Failed to create building RPM repo path' >&2
+      rm -rf /tmp/building_rpm_repo-XXXXXX && mktemp -d -t building_rpm_repo-XXXXXX || {
+        echo 'Failed to create the path for building the RPM repository.' >&2
         exit 1
       }
     )"
